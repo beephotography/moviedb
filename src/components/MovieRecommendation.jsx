@@ -5,6 +5,7 @@ import Loading from "./Loading";
 const MovieRecommendation = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [movieData, setMovieData] = useState(null);
+  const [moviesSearchResult, setMoviesSearchResult] = useState(null);
   const [similarMovies, setSimilarMovies] = useState("");
   const [loadingReco, setLoadingReco] = useState(false);
   const [loadingMovie, setLoadingMovie] = useState(false);
@@ -15,9 +16,9 @@ const MovieRecommendation = () => {
   const fetchMovieData = async (title) => {
     try {
       const response = await axios.get(
-        `http://www.omdbapi.com/?t=${title}&apikey=${omdbApiKey}`,
+        `http://www.omdbapi.com/?s=${title}&apikey=${omdbApiKey}`,
       );
-      setMovieData(response.data);
+      setMoviesSearchResult(response.data.Search);
     } catch (error) {
       console.error("Error fetching movie data:", error);
     }
@@ -57,10 +58,17 @@ const MovieRecommendation = () => {
     setLoadingMovie(false);
   };
 
-  const handleRecommendation = async () => {
-    if (movieData && movieData.Response === "True") {
+  const handleRecommendation = async (imdbID) => {
+    // hole Daten zu einem einzelnen Movie
+    const movieData = await axios.get(
+        `http://www.omdbapi.com/?i=${imdbID}&apikey=${omdbApiKey}`,
+    );
+
+    console.log(movieData);
+
+    if (movieData.data) {
       setLoadingReco(true);
-      await fetchSimilarMovies(movieData);
+      await fetchSimilarMovies(movieData.data);
       setLoadingReco(false);
     } else {
       setSimilarMovies("Film nicht gefunden.");
@@ -80,17 +88,19 @@ const MovieRecommendation = () => {
       {loadingMovie && (
           <Loading isLoading={loadingMovie}/>
       )}
-      {movieData && (
-        <div>
-          <h2>
-            {movieData.Title} ({movieData.Year})
-          </h2>
-          <p>{movieData.Plot}</p>
-          <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"} onClick={handleRecommendation}>Ähnliche Filme finden</button>
-        </div>
+      {moviesSearchResult && ( moviesSearchResult.map(movie => (
+              <div key={movie.imdbID}>
+                <h2>
+                  {movie.Title} ({movie.Year})
+                </h2>
+                <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
+                        onClick={() => handleRecommendation(movie.imdbID)}>Ähnliche Filme finden
+                </button>
+              </div>
+          ))
       )}
       {loadingReco && (
-        <Loading isLoading={loadingReco}/>
+          <Loading isLoading={loadingReco}/>
       )}
       {similarMovies && (
           <div>
