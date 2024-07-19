@@ -101,22 +101,26 @@ const MovieRecommendation = () => {
         </div>
 
         {moviesSearchResult &&
-            <ul class="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
-              {moviesSearchResult.map(movie => (
-                  <li class="cursor-pointer bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm" key={movie.imdbID} onClick={() => handleRecommendation(movie.imdbID)}>
-                      <img src={movie.Poster} alt="" class="mx-auto h-80 w-48"/>
-                      <h3 class="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
+            <div className="mt-16 overflow-x-auto">
+              <ul className="flex space-x-6 text-center text-slate-700">
+                {moviesSearchResult.map((movie) => (
+                    <li
+                        key={movie.imdbID}
+                        className="cursor-pointer bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm flex-shrink-0"
+                        onClick={() => handleRecommendation(movie.imdbID)}
+                    >
+                      <img src={movie.Poster} alt={movie.Title} className="mx-auto h-80 w-48"/>
+                      <h3 className="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
                     </li>
-                    )
-                )
-              }
-            </ul>
+                ))}
+              </ul>
+            </div>
         }
-        {
-            loadingReco && (
-                <Loading isLoading={loadingReco}/>
-            )
-        }
+          {
+              loadingReco && (
+                  <Loading isLoading={loadingReco}/>
+              )
+          }
         {
             similarMovies && (
                 <div className="mt-5">
@@ -125,7 +129,7 @@ const MovieRecommendation = () => {
                   </h2>
                   <ul className="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
                     {similarMovies.map(movie => (
-                            <li className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
+                        <li className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
                                 key={movie.Title}>
                               <h3 className="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
                             </li>
