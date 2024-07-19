@@ -99,7 +99,7 @@ const MovieRecommendation = () => {
         </div>
 
         {moviesSearchResult &&
-            <div className="mt-16 overflow-x-auto">
+            <div className="mt-4 overflow-x-auto">
               <ul className="flex space-x-6 text-center text-slate-700">
                 {moviesSearchResult.map((movie) => (
                     <li
@@ -116,11 +116,11 @@ const MovieRecommendation = () => {
         }
         {
             similarMovies && (
-                <div className="mt-5">
-                  <h2 className="mb-5 text-center font-display text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                <div className="mt-8">
+                  <h2 className="text-center font-display text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
                     Ähnliche Filme
                   </h2>
-                  <ul className="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
+                  <ul className="mt-4 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
                     {similarMovies.map(movie => (
                             <li className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
                                 key={movie.Title}>
