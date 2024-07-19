@@ -14,8 +14,8 @@ Stelle sicher, dass du Node.js und npm installiert hast, um dieses Projekt auszu
 1. **Projekt klonen oder herunterladen:**
 
    ```bash
-   git clone https://github.com/beephotography/weddr.git
-   cd weddr
+   git clone https://github.com/beephotography/moviedb.git
+   cd moviedb
    ```
 
 2. **Abhängigkeiten installieren:**
