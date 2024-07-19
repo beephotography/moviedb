@@ -25,10 +25,13 @@ const MovieRecommendation = () => {
 
     try {
       const response = await axios.post(
-        "https://api.openai.com/v1/completions",
+        "https://api.openai.com/v1/chat/completions",
         {
-          model: "text-davinci-003",
-          prompt: prompt,
+          model: "gpt-4",
+          "messages": [
+            {"role": "system", "content": "Du bist ein hilfreicher Assistent, der ALLE Filme weltweit kennt und gute Empfehlungen ausspielen kann. Du generierst an Hand von Filmdaten ähnliche Filme. Bitte nenne hier aber nur kurze Stichwort-Listen."},
+            {"role": "user", "content": prompt}
+          ],
           max_tokens: 200,
         },
         {
@@ -39,7 +42,7 @@ const MovieRecommendation = () => {
         },
       );
 
-      setSimilarMovies(response.data.choices[0].text.trim());
+      setSimilarMovies(response.data.choices[0].message.content.trim());
     } catch (error) {
       console.error("Error fetching similar movies:", error);
     }
