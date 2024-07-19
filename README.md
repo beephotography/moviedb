@@ -1,13 +1,13 @@
-# Lightweight React App mit Axios und Tailwind CSS
+# Lightweight Movie App mit Axios und Tailwind CSS
 
-Dieses Projekt ist eine einfache React-Anwendung, die Wetterdaten von einer API mit Axios abruft und sie in einem einfachen Frontend darstellt. Das Styling erfolgt mit Tailwind CSS.
+Dieses Projekt ist eine einfache React-Anwendung, die Filmdaten von einer API mit Axios abruft und sie in einem einfachen Frontend darstellt. Das Styling erfolgt mit Tailwind CSS.
 
 ## Voraussetzungen
 
 Stelle sicher, dass du Node.js und npm installiert hast, um dieses Projekt auszuführen.
 
 - Node.js
-- npm (Node Package Manager)
+- npm (Node Package Manager), empfohlene Node Version 20
 
 ## Installation
 
@@ -23,6 +23,16 @@ Stelle sicher, dass du Node.js und npm installiert hast, um dieses Projekt auszu
    ```bash
    npm install
    ```
+
+## API-Keys
+
+Kopiere die Datei **.env.dist** und füge sie als **.env** ein, ändere darin die Einträge entsprechend ab:
+
+   ```env
+    REACT_APP_OMDB_API_KEY=your-omdb-api-key
+    REACT_APP_OPENAI_API_KEY=your-open-api-key
+   ```
+Ersetze "your-omdb-api-key" mit deinem OMDb API key und "your-open-api-key" mit deinem API key von OpenAI.
 
 ## Verwendung
 
@@ -50,4 +60,3 @@ Stelle sicher, dass du Node.js und npm installiert hast, um dieses Projekt auszu
 ## Lizenz
 
 Dieses Projekt ist unter der MIT-Lizenz veröffentlicht. Siehe [LICENSE](./LICENSE) für weitere Details.
-
