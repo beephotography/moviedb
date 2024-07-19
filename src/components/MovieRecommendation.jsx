@@ -104,14 +104,15 @@ const MovieRecommendation = () => {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
             </div>
             <input
+              id="default-search"
               type="search"
               value={movieTitle}
               onChange={(e) => setMovieTitle(e.target.value)}
@@ -162,10 +163,10 @@ const MovieRecommendation = () => {
             Ähnliche Filme
           </h2>
           <ul className="mt-4 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
-            {similarMovies.map((movie) => (
+            {similarMovies.map((movie, index) => (
               <li
                 className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
-                key={movie.Title}
+                key={index}
               >
                 <h3 className="my-3 font-display font-medium">
                   {movie.Title} ({movie.Year})
