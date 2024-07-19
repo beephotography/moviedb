@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import Loading from "./Loading";
 
@@ -76,39 +76,48 @@ const MovieRecommendation = () => {
   };
 
   return (
-    <div>
-      <h1>Film-Empfehlungs-App</h1>
-      <input
-        type="text"
-        value={movieTitle}
-        onChange={(e) => setMovieTitle(e.target.value)}
-        placeholder="Filmtitel eingeben"
-      />
-      <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"} onClick={handleSearch}>Suche Film</button>
-      {loadingMovie && (
-          <Loading isLoading={loadingMovie}/>
-      )}
-      {moviesSearchResult && ( moviesSearchResult.map(movie => (
-              <div key={movie.imdbID}>
-                <h2>
-                  {movie.Title} ({movie.Year})
-                </h2>
-                <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
-                        onClick={() => handleRecommendation(movie.imdbID)}>Ähnliche Filme finden
-                </button>
-              </div>
-          ))
-      )}
-      {loadingReco && (
-          <Loading isLoading={loadingReco}/>
-      )}
-      {similarMovies && (
-          <div>
-            <h3>Ähnliche Filme:</h3>
-            <p>{similarMovies}</p>
-          </div>
-      )}
-    </div>
+      <div>
+        <h2 className="text-center font-display text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+          Finde deinen passenden Film mit moviedb!
+        </h2>
+        <input
+            type="text"
+            value={movieTitle}
+            onChange={(e) => setMovieTitle(e.target.value)}
+            placeholder="Filmtitel eingeben"
+        />
+        <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
+                onClick={handleSearch}>Suche Film
+        </button>
+        {loadingMovie && (
+            <Loading isLoading={loadingMovie}/>
+        )}
+        {moviesSearchResult &&
+            <ul class="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
+              {moviesSearchResult.map(movie => (
+                    <li class="rounded-xl bg-white px-6 py-8 shadow-sm" key={movie.imdbID} onClick={() => handleRecommendation(movie.imdbID)}>
+                      <img src={movie.Poster} alt="" class="mx-auto h-80 w-48"/>
+                      <h3 class="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
+                    </li>
+                    )
+                )
+              }
+            </ul>
+        }
+        {
+            loadingReco && (
+                <Loading isLoading={loadingReco}/>
+            )
+        }
+        {
+            similarMovies && (
+                <div>
+                  <h3>Ähnliche Filme:</h3>
+                  <p>{similarMovies}</p>
+                </div>
+            )
+        }
+      </div>
   );
 };
 

@@ -3,9 +3,11 @@ import MovieRecommendation from "./components/MovieRecommendation";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <MovieRecommendation></MovieRecommendation>
-    </div>
+      <div className="bg-gray-200 px-2 py-10">
+          <div className="mx-auto max-w-6xl">
+            <MovieRecommendation></MovieRecommendation>
+          </div>
+      </div>
   );
 }
 
