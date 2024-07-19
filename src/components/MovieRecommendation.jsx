@@ -4,11 +4,9 @@ import Loading from "./Loading";
 
 const MovieRecommendation = () => {
   const [movieTitle, setMovieTitle] = useState("");
-  const [movieData, setMovieData] = useState(null);
   const [moviesSearchResult, setMoviesSearchResult] = useState(null);
   const [similarMovies, setSimilarMovies] = useState("");
-  const [loadingReco, setLoadingReco] = useState(false);
-  const [loadingMovie, setLoadingMovie] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const omdbApiKey = process.env.REACT_APP_OMDB_API_KEY;
   const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
@@ -57,9 +55,9 @@ const MovieRecommendation = () => {
   };
 
   const handleSearch = async () => {
-    setLoadingMovie(true);
+    setLoading(true);
     await fetchMovieData(movieTitle);
-    setLoadingMovie(false);
+    setLoading(false);
   };
 
   const handleRecommendation = async (imdbID) => {
@@ -69,9 +67,9 @@ const MovieRecommendation = () => {
     );
 
     if (movieData.data) {
-      setLoadingReco(true);
+      setLoading(true);
       await fetchSimilarMovies(movieData.data);
-      setLoadingReco(false);
+      setLoading(false);
     } else {
       setSimilarMovies("Film nicht gefunden.");
     }
@@ -79,6 +77,11 @@ const MovieRecommendation = () => {
 
   return (
       <div>
+        <div>
+          {loading && (
+              <Loading isLoading={loading}/>
+          )}
+        </div>
         <h2 className="mb-5 text-center font-display text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
           Finde deinen passenden Film mit moviedb!
         </h2>
@@ -93,11 +96,6 @@ const MovieRecommendation = () => {
           <button className={"bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full"}
                   onClick={handleSearch}>Suche Film
           </button>
-          <div>
-            {loadingMovie && (
-                <Loading isLoading={loadingMovie}/>
-            )}
-          </div>
         </div>
 
         {moviesSearchResult &&
@@ -116,11 +114,6 @@ const MovieRecommendation = () => {
               </ul>
             </div>
         }
-          {
-              loadingReco && (
-                  <Loading isLoading={loadingReco}/>
-              )
-          }
         {
             similarMovies && (
                 <div className="mt-5">
@@ -129,7 +122,7 @@ const MovieRecommendation = () => {
                   </h2>
                   <ul className="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
                     {similarMovies.map(movie => (
-                        <li className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
+                            <li className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
                                 key={movie.Title}>
                               <h3 className="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
                             </li>
