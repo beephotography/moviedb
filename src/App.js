@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import MovieRecommendation from "./components/MovieRecommendation";
 
 function App() {
