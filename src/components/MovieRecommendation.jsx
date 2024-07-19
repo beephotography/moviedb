@@ -15,6 +15,7 @@ const MovieRecommendation = () => {
 
   const fetchMovieData = async (title) => {
     try {
+      setSimilarMovies(null);
       const response = await axios.get(
         `http://www.omdbapi.com/?s=${title}&apikey=${omdbApiKey}`,
       );
@@ -33,7 +34,7 @@ const MovieRecommendation = () => {
         {
           model: "gpt-3.5-turbo",
           "messages": [
-            {"role": "system", "content": "Du bist ein hilfreicher Assistent, der ALLE Filme weltweit kennt und gute Empfehlungen ausspielen kann. Du generierst an Hand von Filmdaten ähnliche Filme. Bitte nenne hier aber nur kurze Stichwort-Listen."},
+            {"role": "system", "content": "Du bist ein hilfreicher Assistent, der ALLE Filme weltweit kennt und gute Empfehlungen ausspielen kann. Du generierst an Hand von Filmdaten ähnliche Filme. Deine Antwort MUSS in JSON Format kommen und soll ein Javascript-Array OHNE key sein, bei welchem JEDER Film/Eintrag ein weiteres JSON-Objekt sein soll mit Daten wit 'Title' usw. - Ich will nur 'Year', 'Title' haben."},
             {"role": "user", "content": prompt}
           ],
           max_tokens: 200,
@@ -45,8 +46,11 @@ const MovieRecommendation = () => {
           },
         },
       );
+      const similarMoviesObject = JSON.parse(response.data.choices[0].message.content);
 
-      setSimilarMovies(response.data.choices[0].message.content.trim());
+      console.log(similarMoviesObject);
+      console.log(similarMoviesObject.similarMovies);
+      setSimilarMovies(similarMoviesObject);
     } catch (error) {
       console.error("Error fetching similar movies:", error);
     }
@@ -63,8 +67,6 @@ const MovieRecommendation = () => {
     const movieData = await axios.get(
         `http://www.omdbapi.com/?i=${imdbID}&apikey=${omdbApiKey}`,
     );
-
-    console.log(movieData);
 
     if (movieData.data) {
       setLoadingReco(true);
@@ -101,7 +103,7 @@ const MovieRecommendation = () => {
         {moviesSearchResult &&
             <ul class="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
               {moviesSearchResult.map(movie => (
-                  <li class="rounded-xl bg-white px-6 py-8 shadow-sm" key={movie.imdbID} onClick={() => handleRecommendation(movie.imdbID)}>
+                  <li class="cursor-pointer bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm" key={movie.imdbID} onClick={() => handleRecommendation(movie.imdbID)}>
                       <img src={movie.Poster} alt="" class="mx-auto h-80 w-48"/>
                       <h3 class="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
                     </li>
@@ -117,9 +119,20 @@ const MovieRecommendation = () => {
         }
         {
             similarMovies && (
-                <div>
-                  <h3>Ähnliche Filme:</h3>
-                  <p>{similarMovies}</p>
+                <div className="mt-5">
+                  <h2 className="mb-5 text-center font-display text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                    Ähnliche Filme
+                  </h2>
+                  <ul className="mt-16 grid grid-cols-1 gap-6 text-center text-slate-700 md:grid-cols-3">
+                    {similarMovies.map(movie => (
+                            <li className="bg-gray-100 hover:bg-gray-300 rounded-xl bg-white px-6 py-8 shadow-sm"
+                                key={movie.Title}>
+                              <h3 className="my-3 font-display font-medium">{movie.Title} ({movie.Year})</h3>
+                            </li>
+                        )
+                    )
+                    }
+                  </ul>
                 </div>
             )
         }
